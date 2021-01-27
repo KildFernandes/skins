@@ -1,4 +1,7 @@
 const db = require('./database');
+const csv = require('csv-parser')
+const fs = require('fs')
+const results = [];
 
 beforeAll(async () => {
     await db.sequelize.sync();
@@ -70,7 +73,6 @@ test('get all skins', async () => {
     const skindell1 = await db.skin.findByPk(3);
     expect(skindell1).toBeNull();
     
-    
     await db.skin.destroy({
         where: {
             id: 4
@@ -81,6 +83,31 @@ test('get all skins', async () => {
     
 });
 
+    test('save csv', async () => {
+        db.skin.uploadCsv = async(data) => 
+            fs.createReadStream("allSkins.csv")
+                .pipe(new StringStream('utf-8'))
+                .CSVParse({
+                    delimiter: '\t', 
+                    escapeChar: '"', 
+                    quoteChar: '"'
+                })
+                .map(data => ({
+                    name: data.name,
+                    tipe: data.tipe,
+                    id: data.id,
+                    /*created_at: new Date(),
+                    updated_at: new Date()*/
+                }))
+                .each(async entry => await db.skin.create(entry))
+                .each(result => log(result)) // if it's worth logging
+                .run();
+        
+        
+        var res = await db.skin.findAll({ order: db.sequelize.random(), limit: 1 });
+        console.log(res);
+        
+    });
 
 afterAll(async () => {
     await db.sequelize.close();

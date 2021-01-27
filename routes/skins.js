@@ -26,8 +26,8 @@ router.get("/:id", function(req, res) {
 
 router.put("/", function(req, res) {
     db.skin.create({
-        firstName: req.body.firstName,
-        lastName: req.body.lastName,
+        name: req.body.name,
+        tipo: req.body.tipo,
         id: req.body.id
         })
         .then( Skin => {
