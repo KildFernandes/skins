@@ -5,7 +5,7 @@ var router = express.Router();
 var db = require('../database');
 
 router.get("/all", function(req, res) {
-    db.Skin.findAll()
+    db.skin.findAll()
         .then( skins => {
             res.status(200).send(JSON.stringify(skins));
         })
@@ -15,7 +15,7 @@ router.get("/all", function(req, res) {
 });
 
 router.get("/:id", function(req, res) {
-    db.Skin.findByPk(req.params.id)
+    db.skin.findByPk(req.params.id)
         .then( Skin => {
             res.status(200).send(JSON.stringify(Skin));
         })
@@ -25,7 +25,7 @@ router.get("/:id", function(req, res) {
 });
 
 router.put("/", function(req, res) {
-    db.Skin.create({
+    db.skin.create({
         firstName: req.body.firstName,
         lastName: req.body.lastName,
         id: req.body.id
@@ -39,7 +39,7 @@ router.put("/", function(req, res) {
 });
 
 router.delete("/:id", function(req, res) {
-    db.Skin.destroy({
+    db.skin.destroy({
         where: {
             id: req.params.id
         }

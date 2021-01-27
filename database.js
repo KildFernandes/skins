@@ -5,7 +5,7 @@ const sequelize = new Sequelize("postgres://postgres:postgres@localhost/skinsdb"
   dialect: 'postgres'
   // anything else you want to pass
 })
-const Skin = sequelize.define('Skin', {
+const skin = sequelize.define('skin', {
     name: {
         type: Sequelize.STRING,
         allowNull: false
@@ -17,5 +17,5 @@ const Skin = sequelize.define('Skin', {
 });
 module.exports = {
     sequelize: sequelize,
-    Skin: Skin
+    skin: skin
 };
