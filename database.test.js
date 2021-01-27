@@ -100,9 +100,24 @@ test('get all skins', async () => {
         
         const jsonArray=await csv().fromFile(csvFilePath);
         db.skin.bulkCreate(jsonArray, {returning: true});
-        /*var res = await db.skin.findAll({ order: db.sequelize.random(), limit: 1 });
-        console.log(res);
-        */
+       
+        await db.skin.destroy({
+            where: {
+                id: 8
+            }
+        });
+        await db.skin.destroy({
+            where: {
+                id: 9
+            }
+        });
+        await db.skin.destroy({
+            where: {
+                id: 10
+            }
+        });
+       
+
     });
 
 afterAll(async () => {
