@@ -100,7 +100,7 @@ test('get all skins', async () => {
         
         const jsonArray=await csv().fromFile(csvFilePath);
         db.skin.bulkCreate(jsonArray, {returning: true});
-       
+        /*
         await db.skin.destroy({
             where: {
                 id: 8
@@ -116,7 +116,7 @@ test('get all skins', async () => {
                 id: 10
             }
         });
-       
+        */
 
     });
 

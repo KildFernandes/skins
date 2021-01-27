@@ -4,8 +4,21 @@ var express = require('express');
 var router = express.Router();
 var db = require('../database');
 
+
 router.get("/all", function(req, res) {
     db.skin.findAll()
+        .then( skins => {
+            res.status(200).send(JSON.stringify(skins));
+        })
+        .catch( err => {
+            res.status(500).send(JSON.stringify(err));
+        });
+});
+
+router.get("/dayskin", function(req, res) {
+    db.skin.findAll({ 
+        order: db.sequelize.random() 
+     })
         .then( skins => {
             res.status(200).send(JSON.stringify(skins));
         })
@@ -51,5 +64,8 @@ router.delete("/:id", function(req, res) {
             res.status(500).send(JSON.stringify(err));
         });
 });
+
+
+
 
 module.exports = router;
