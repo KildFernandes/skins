@@ -84,29 +84,25 @@ test('get all skins', async () => {
 });
 
     test('save csv', async () => {
-        db.skin.uploadCsv = async(data) => 
-            fs.createReadStream("allSkins.csv")
-                .pipe(new StringStream('utf-8'))
-                .CSVParse({
-                    delimiter: '\t', 
-                    escapeChar: '"', 
-                    quoteChar: '"'
-                })
-                .map(data => ({
-                    name: data.name,
-                    tipe: data.tipe,
-                    id: data.id,
-                    /*created_at: new Date(),
-                    updated_at: new Date()*/
-                }))
-                .each(async entry => await db.skin.create(entry))
-                .each(result => log(result)) // if it's worth logging
-                .run();
+        const csvFilePath='./allSkins.csv'
+        const csv=require('csvtojson')
+        csv()
+        .fromFile(csvFilePath)
+        .then((jsonObj)=>{
+            console.log(jsonObj);
+            /**
+             * [
+             * 	{a:"1", b:"2", c:"3"},
+             * 	{a:"4", b:"5". c:"6"}
+             * ]
+             */ 
+        })
         
-        
-        var res = await db.skin.findAll({ order: db.sequelize.random(), limit: 1 });
+        const jsonArray=await csv().fromFile(csvFilePath);
+        db.skin.bulkCreate(jsonArray, {returning: true});
+        /*var res = await db.skin.findAll({ order: db.sequelize.random(), limit: 1 });
         console.log(res);
-        
+        */
     });
 
 afterAll(async () => {
